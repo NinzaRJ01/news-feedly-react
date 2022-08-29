@@ -1,25 +1,39 @@
 import logo from './logo.svg';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
-function App() {
+import NavBar from './components/NavBar';
+import SearchBar from './components/SearchBar';
+import CategoriesSelectionComp from './components/CategoriesSelectionComp';
+import ResultArea from './components/ResultArea';
+import React from 'react';
+class App extends React.Component {
+  constructor(){
+    super();
+    this.state = {
+      searchTerm :"",
+      searched :false
+    }
+  }
+  handleInput = (input)=>{
+    this.setState({
+      searchTerm:input,
+      searched:true
+    });
+  }
+  render(){
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="">
+
+       <NavBar/>
+       <SearchBar parentHandleFunc={this.handleInput}></SearchBar>
+       <CategoriesSelectionComp ></CategoriesSelectionComp>
+       <ResultArea searchTerm={this.state.searchTerm} searched = {this.state.searched}></ResultArea>
+       
     </div>
-  );
+    );
+  }
 }
 
 export default App;

@@ -1,0 +1,23 @@
+.search-bar-area> input{
+    text-align: center;
+    border:0;
+    border-bottom: 2px solid;
+    width: 300px;
+    font-size: large;
+}
+
+.search-bar-area > input:focus{
+    outline-width: 0;
+    
+}
+.search-bar-area > button {
+    color : #509BCC;
+    background-color: transparent;
+    margin-left : 10px;
+    border : none;
+    border-bottom: 10px #509BCC solid;
+   
+}
+.search-bar-area >button:hover {
+   border-bottom: 10px #359219 solid;
+}
