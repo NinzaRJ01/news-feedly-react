@@ -13,7 +13,7 @@ function ResultTile ({article}){
             <div>
                 <div className="title">{title}</div>
                 <div className="auth">{author} at {source.name}</div>
-
+                <div className = "line"></div>
                 <div className="desc">{description}</div>
 
             </div>
@@ -25,12 +25,16 @@ class ResultArea extends React.Component{
     constructor(){
         super();
         this.state = {
-            status :"ok",
+            status :"no",
             totalRes : 0,
             articles :[],
-            page :1,size:10,
+            page :2,size:10,
             isIntial : true
         }
+
+    }
+    componentDidMount = ()=>{
+        this.fetchData(this.props.searchTerm);
     }
     componentDidUpdate = (prevProps)=>{
         if (this.props.searchTerm !== prevProps.searchTerm) {
@@ -40,11 +44,25 @@ class ResultArea extends React.Component{
         }
     }
     fetchData = (term)=>{
-        fetch(`http://localhost:8000/api/?term=${term}`,{
-            credentials: 'same-origin'
-          })
+        console.log(".")
+        fetch(`/api/?term=${term}&page=${1}`)
             .then(data=>data.json())
                 .then(data=>this.updateData(data))
+    }
+    handleMoreClick = ()=>{
+        this.setState(
+            {page : this.state.page+1}
+        );
+        fetch(`/api/?term=${this.props.searchTerm}&page=${this.state.page}`)
+            .then(data=>data.json())
+                .then(data=>this.incrementData(data))
+    }
+    incrementData = (data)=>{
+        data.articles.unshift(...this.state.articles);
+        console.log(data.articles);
+        this.setState({
+            articles:data.articles
+        })
     }
     updateData = (data) => {
         console.log(data);
@@ -58,7 +76,7 @@ class ResultArea extends React.Component{
         }
     }
     render(){
-        setTimeout(3000,()=>{this.fetchData(this.props.searchTerm)});
+        
         let results = "";
         if(this.state.status=="ok"){
            results = this.state.articles.map(art=> <ResultTile article={art}/>)
@@ -72,6 +90,7 @@ class ResultArea extends React.Component{
                 <div className="container">
                     {results}
                 </div>
+                <button onClick={this.handleMoreClick }>More</button>
             </div>
         );
     }

@@ -73,6 +73,10 @@ a:link{
 .news-tile:hover{
   opacity: 0.75;
 }
-
+.line{
+  height: 3px;
+  background-color: #203441;
+  width: 100%;
+}
 
 

@@ -34,6 +34,7 @@ class CategoriesSelectionComp extends React.Component{
                     preference:newCats,
                     isActive :newActives
                 })
+                this.props.sendPref(newCats);
             }else {
                 let newCats = [...this.state.preference];
                 newCats = newCats.filter(cat => cat!=id);
@@ -43,7 +44,8 @@ class CategoriesSelectionComp extends React.Component{
                 this.setState({
                     preference:newCats,
                     isActive :newActives
-                })
+                });
+                this.props.sendPref(newCats);
             }
 
     }

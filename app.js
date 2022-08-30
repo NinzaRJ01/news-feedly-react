@@ -18,16 +18,18 @@ app.get('/', function (req, res) {
   });
 app.get('/api/',async function(req,res){
     
-        var {term,pageSize,page,category,sortBy} = req.query;
+        var {term,pageSize,page,category,sortBy,type} = req.query;
+        console.log(page)
         if(page==undefined)page = 1;
         if(pageSize==undefined)pageSize=10;
+        if(type==undefined)type = everything
         if(sortBy==undefined)sortBy = "relevancy"
         let data= await fetch(
             `https://newsapi.org/v2/everything?q=${term}&sortBy=${sortBy}&pageSize=${pageSize}&page=${page}&apiKey=68cbd040808b4450926076069ec8bfb6`
             );
         let respObj = await data.json();
-        
-        console.log(term)
+        res.send(respObj);
+        console.log(page)
         
         
 })

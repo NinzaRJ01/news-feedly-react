@@ -3,5 +3,27 @@
     height : 50px;
     width: 50px; 
     border: 5px solid skyblue;
-    
 }
+.profile-menu{
+    position: absolute;
+    padding: 10px;
+    padding-left: 0px;
+    top:80px;
+    right:10px;
+    background-color: #203441;
+    color:white;
+    min-width: 300px;
+}
+.profile-menu>div{
+    padding-top: 10px;
+    padding-bottom : 10px;
+    padding-left: 10px;
+}
+.profile-menu>div:hover{
+    background-color: white ;
+    color: #203441;
+}
+.link{
+    color:white;
+}
+
