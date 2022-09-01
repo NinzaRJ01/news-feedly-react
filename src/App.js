@@ -22,16 +22,27 @@ class App extends React.Component {
     this.state = {
       searchTerm :"",
       searched :false,
-      pref :[]
+      useDate:false,
+      fromDate:"",
+      toDate:"",
+      pref :['business'],
+      link:""
     }
   }
-  handleInput = (input)=>{
+  handleInput = ({searchVal,useDate,fromDate,toDate,link})=>{
+    
     this.setState({
-      searchTerm:input,
-      searched:true
+      searchTerm:searchVal,
+      searched:true,
+      useDate : useDate,
+      fromDate:fromDate,
+      toDate:toDate,
+      link:link
     });
   }
   handleCat = (input)=>{
+    console.log("change pref: ");
+    console.log(input)
     this.setState({
       pref : input
     })
@@ -51,7 +62,12 @@ class App extends React.Component {
               element = {
                 <ResultArea 
                 searchTerm={this.state.searchTerm} 
-                searched = {this.state.searched}>
+                searched = {this.state.searched}
+                useDate = {this.state.useDate}
+                fromDate = {this.state.fromDate}
+                toDate = {this.state.toDate}
+                link= {this.state.link}
+                >
                 </ResultArea>
               }></Route>
           </Routes>

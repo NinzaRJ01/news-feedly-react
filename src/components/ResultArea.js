@@ -31,41 +31,48 @@ class ResultArea extends React.Component{
             page :2,size:10,
             isIntial : true
         }
+        
 
     }
     componentDidMount = ()=>{
-        this.fetchData(this.props.searchTerm);
+        this.fetchData(this.props.searchTerm,this.updateData);
     }
     componentDidUpdate = (prevProps)=>{
-        if (this.props.searchTerm !== prevProps.searchTerm) {
+        
+        if (this.props.link != prevProps.link) {           
             this.setState({page:1});
-            this.fetchData(this.props.searchTerm);
+            this.fetchData(this.props.searchTerm,this.updateData);
             
         }
     }
-    fetchData = (term)=>{
-        console.log(".")
-        fetch(`/api/?term=${term}&page=${1}`)
+    fetchData = (term,func,page = 1)=>{
+        
+       
+        let link = `/api/?term=${term}&page=${page}`;
+        if(this.props.useDate==true){
+            link = link + `&fromDate=${this.props.fromDate}&toDate=${this.props.toDate}&useDate=true`;
+        }else link = link +"&useDate=false";
+        console.log(link);
+        fetch(link)
             .then(data=>data.json())
-                .then(data=>this.updateData(data))
+                .then(data=>func(data))
     }
     handleMoreClick = ()=>{
+        
+        this.fetchData(this.props.searchTerm,this.incrementData,this.state.page+1);
         this.setState(
             {page : this.state.page+1}
         );
-        fetch(`/api/?term=${this.props.searchTerm}&page=${this.state.page}`)
-            .then(data=>data.json())
-                .then(data=>this.incrementData(data))
     }
     incrementData = (data)=>{
+        console.log("increment");
         data.articles.unshift(...this.state.articles);
-        console.log(data.articles);
         this.setState({
             articles:data.articles
         })
     }
     updateData = (data) => {
-        console.log(data);
+        
         if(data.status=="ok" && data.totalResults>0){
             this.setState({
                 status: data.status,
@@ -81,10 +88,17 @@ class ResultArea extends React.Component{
         if(this.state.status=="ok"){
            results = this.state.articles.map(art=> <ResultTile article={art}/>)
         }
+        let datesOut ="";
+        if(this.props.useDate==true){
+            datesOut = <div className="d-flex ">
+                        <div className="p-2">From: {this.props.fromDate}</div>
+                        <div className="p-2">To : {this.props.toDate}</div>
+                    </div>
+        }
         return (
             <div className="d-flex flex-column">
                 <div className="super-h-text">
-                    Searched Term : "{this.props.searchTerm}"
+                    Searched Term : "{this.props.searchTerm}" {datesOut}
                     <div>Total Results : {this.state.totalRes}</div>
                 </div>
                 <div className="container">

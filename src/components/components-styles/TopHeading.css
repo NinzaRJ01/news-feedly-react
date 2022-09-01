@@ -1,0 +1,9 @@
+.heading-tile > .title{
+    font-size :20px;  
+    text-transform: capitalize;
+}
+.keyword {
+    text-decoration: underline;
+    font-weight: bold;
+    
+}

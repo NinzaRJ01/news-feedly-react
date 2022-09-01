@@ -26,8 +26,24 @@ class SearchBar extends React.Component{
             alert("Alert ! Please use correct dates ");
             return ;
         }
-        this.props.navigate('/search/?term='+this.state.searchValue);
-        this.props.parentHandleFunc(this.state.searchValue);
+        let LINK = '/search/?term='+this.state.searchValue;
+        if(this.state.useDate) LINK  = LINK +`&from=${this.state.fromDate}&to=${this.state.toDate}`;
+        this.props.navigate(LINK);
+        
+        if(!this.state.useDate)
+            this.props.parentHandleFunc(
+                {
+                    searchVal:this.state.searchValue,
+                    useDate:false,
+                    link:LINK
+                });
+        else this.props.parentHandleFunc({
+            searchVal:this.state.searchValue,
+            useDate:true,
+            fromDate:this.state.fromDate,
+            toDate:this.state.toDate,
+            link:LINK
+        });
         
         event.preventDefault();
     }
@@ -43,6 +59,7 @@ class SearchBar extends React.Component{
         );
     }
     handleToDateChange = (event)=>{
+        
         this.setState({
             
             toDate:event.target.value,
@@ -87,7 +104,7 @@ class SearchBar extends React.Component{
                 </>
             );
         }
-        console.log(this.props);
+        
         return (
             <div className="d-flex justify-content-center search-bar-area my-5">
                 <input

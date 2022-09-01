@@ -18,18 +18,32 @@ app.get('/', function (req, res) {
   });
 app.get('/api/',async function(req,res){
     
-        var {term,pageSize,page,category,sortBy,type} = req.query;
+        var {term,pageSize,page,category,sortBy,type,fromDate,toDate,useDate} = req.query;
         console.log(page)
         if(page==undefined)page = 1;
         if(pageSize==undefined)pageSize=10;
-        if(type==undefined)type = everything
-        if(sortBy==undefined)sortBy = "relevancy"
-        let data= await fetch(
-            `https://newsapi.org/v2/everything?q=${term}&sortBy=${sortBy}&pageSize=${pageSize}&page=${page}&apiKey=68cbd040808b4450926076069ec8bfb6`
-            );
+        
+        if(sortBy==undefined)sortBy = "relevancy";
+        let link= "";
+        let key = "apiKey=68cbd040808b4450926076069ec8bfb6";
+        if(type=="top-headlines"){
+          link =`https://newsapi.org/v2/top-headlines?category=${category}&pageSize=${pageSize}&`
+          
+        }
+        else {
+          link = `https://newsapi.org/v2/everything?q=${term}&sortBy=${sortBy}&pageSize=${pageSize}&page=${page}&`
+          if(useDate ="true")
+           link  = link +`from=${fromDate}&to=${toDate}&`;
+        }
+        console.log(link+key);
+        let data = await fetch(
+            link + key
+          );
+        
         let respObj = await data.json();
         res.send(respObj);
-        console.log(page)
+        // console.log(respObj)
+        // console.log(page)
         
         
 })
